@@ -1,0 +1,37 @@
+RESOLVED: //Bug: people are entering the elevator despite it not being on floor 1 when a thread releases its hold
+
+RESOLVED: //Bug: people are entering the elevator at floor 1 (beginning program) before the doors open
+
+RESOLVED: //Bug: Elevator is open on the same floor more than once if more than one person wants to go to that floor
+
+RESOLVED: //BUg: Threads break after first rotation and give exception
+	-Partially solved. Original problem was due to choice of how I chose to  remove from the queue. Now appears randomly in the middle of running.
+	-Note: Exception is: ConcurrentModificationException on line 118 (enhanced for loop to iterate through queue.
+	-Not sure what was causing this bug to begin with, after changing to semaphore instead of Thread.sleep() it is working as intended
+
+RESOLVED: //BUG: Elevator occasionally skips a requested floor
+	-Reason was due to accidentally initializing 7 permits instead of 0
+
+RESOLVED: //DESIGN FAULT: Using Thread.sleep to coordinate despite being illegal
+	-Used semaphores
+
+RESOLVED: //BUG: Leftover permits exist after first round of people complete their trip
+	-Drain permits at the end of each cycle
+	-Proper fix: found people releasing permit back after exiting. 
+
+0-6
+7-13
+14-20
+21-27
+28-34
+35-41
+42-48
+
+
+
+
+floorReached[i].release();
+openDoor(i);
+Thread.sleep(1000); // waiting for people to leave, TBD
+closeDoor();
+i++;
